@@ -5,13 +5,15 @@
 % accuracy for this case is 'real*4'
 close all ; clear all ;
 
-np = 33 ; %number of years records
-file_name = 'jra25' ; % or ERA40g
+np = 16 ; %number of years records
+file_name = 'cube78' ; %'jra25' ; % or ERA40g
 nx =320; ny = 160;
 accuracy = 'real*4' ;
+start_year = 1991 ;
 
-cd /scratch/general/am8e13/cs_36km_tutorial/climdata/
+%cd /scratch/general/am8e13/cs_36km_tutorial/climdata/
 %cd /scratch/general/am8e13/ERA_data/
+cd /scratch/general/am8e13/NCEP_data/
 
 variables = {'v10m', 'u10m', 'dlw', 'dsw', 'tmp2m_degC', 'spfh2m', 'rain'};
 
@@ -21,7 +23,7 @@ for k = 1:length(variables)
     fprintf('Now reading %s \n',var)
     
     for i = 1: np
-        year = 1978 + i;
+        year = start_year + i;
         file_name_complete = strcat(file_name,'_',num2str(var),'_',num2str(year));
         fprintf('now reading %s \n',file_name_complete)
         fid = fopen( file_name_complete, 'r', 'b' );   
