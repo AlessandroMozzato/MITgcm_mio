@@ -6,8 +6,6 @@ tmp=zeros(nx+2,ny+2);
 % build diff matrix between interpolated bathy and actual 9km bathy:
 % true points are new points in bathy and not in the interpolated
 
-
-<<<<<<< HEAD
 % Open files temp/salt
 ncid = netcdf.open( '/hpcdata/scratch/am8e13/arctic420x384/run_tempcorr/toglue/state.nc', 'NOWRITE' );
 Ttemp = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'Temp' ), [ 0 0 0 0 ], [ nx ny nz 10 ] , [ 1 1 1 18] );
@@ -35,8 +33,6 @@ netcdf.close( ncid );
 T = mean(Ttemp,4) ;
 S = mean(Stemp,4) ;
 
-
-=======
 % Open files
 ncid = netcdf.open( '/hpcdata/scratch/am8e13/arctic420x384/run_tempcorr/toglue/state.nc', 'NOWRITE' );
 Ttemp = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'Temp' ), [ 0 0 0 0 ], [ nx ny nz 10 ] , [ 1 1 1 18] );
@@ -48,7 +44,6 @@ netcdf.close( ncid );
 T = mean(Ttemp,4) ;
 S = mean(Stemp,4) ;
 
->>>>>>> 9c43d859eb9656583e475b30296956c2fe428802
 fprintf('read \n')
 
 tmp=zeros(nx+2,ny+2);
@@ -58,7 +53,6 @@ tempS_mod=zeros(nx2,ny2,50);
 tempT=zeros(nx2,ny2,50);
 tempT_mod=zeros(nx2,ny2,50);
 
-<<<<<<< HEAD
 for i = 1:6
     % set up file output and 
     if i == 1
@@ -118,7 +112,7 @@ for i = 1:6
     elseif i == 3 || i == 4 || i == 5 || i == 6
         tmptot2 = zeros(nx2,ny2) ;
         tmp(2:(nx+1),2:(ny+1))=fin(:,:);
-=======
+        
 for i = 1:2
     % set up file output and 
     if i == 1
@@ -137,19 +131,17 @@ for i = 1:2
     for k = 1:50
         % interpolation: create new file interpolating
         tmp(2:(nx+1),2:(ny+1))=fin(:,:,k);
->>>>>>> 9c43d859eb9656583e475b30296956c2fe428802
         tmp(1,:)=tmp(2,:);
         tmp(nx+2,:)=tmp(nx+1,:);
         tmp(:,1)=tmp(:,2);
         tmp(:,ny+2)=tmp(:,ny+1);
         tmp2=interp2(y,x',tmp,y2,x2');
-<<<<<<< HEAD
         tmptot2 = tmp2 ;
     end
     
     fprintf('Write: %s \n',fout)
     writebin(fout,tmptot2)
-=======
+
         tmp2_mod = tmp2 ;
         tmp2(tmp2==0) = nan ;
         tmp2_mod(tmp2_mod==0) = nan ;
@@ -198,6 +190,5 @@ for i = 1:2
         writebin(fout,tempS)
         writebin(fout_mod,tempS_mod)
     end
->>>>>>> 9c43d859eb9656583e475b30296956c2fe428802
 end
         

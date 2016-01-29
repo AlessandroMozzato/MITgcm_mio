@@ -1,14 +1,13 @@
 %%% This script produces masks and values for the perturbation experiment
 %%% Different resolutions can be used
 
-<<<<<<< HEAD
-res = 18 ; % resolution can be 36,18 and 9
-
-max_val = 70 ; % maximum value for the perturbation
-min_val = 50 ; % minumum value for the perturbation
-=======
 res = 36 ; % resolution can be 36,18 and 9
->>>>>>> 9c43d859eb9656583e475b30296956c2fe428802
+
+max_val = 100 ; % maximum value for the perturbation
+min_val = 50 ; % minumum value for the perturbation
+
+res = 36 ; % resolution can be 36,18 and 9
+
 
 if res == 36
     k = 1 ; 
@@ -26,7 +25,6 @@ end
 ieee='b';
 prec='real*4';
 
-<<<<<<< HEAD
 fprintf('Ive read salt init \n');
 
 if res == 36
@@ -108,7 +106,7 @@ elseif res == 9
     fwrite(fid,restSValues,prec); 
     fclose(fid);
     
-=======
+end
 
 fprintf('Ive read salt init \n');
 
@@ -239,7 +237,6 @@ elseif res == 9
 %     fwrite(fid,restSValues_rest,prec); 
 %     fclose(fid);
     
->>>>>>> 9c43d859eb9656583e475b30296956c2fe428802
 else
     printf('Wrong dimension')
 end

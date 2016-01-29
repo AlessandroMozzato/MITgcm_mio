@@ -7,17 +7,17 @@ tmp=zeros(nx+2,ny+2);
 %origiT = ncread('spinup36km.nc','T');
 %origiS = ncread('spinup36km.nc','S');
 
-ncid = netcdf.open( '/hpcdata/scratch/am8e13/cs_36km_tutorial/run_sponge/results/state.nc', 'NOWRITE' );
-Ttemp = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'Temp' ), [ 0 0 0 720 ], [ nx ny nz 20 ] , [ 1 1 1 18] );
-Stemp = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'S' ), [ 0 0 0 720 ], [ nx ny nz 20 ] , [ 1 1 1 18]  );
-Ttemp(:,:,:,21:40) = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'Temp' ), [ 0 0 0 719 ], [ nx ny nz 20 ] , [ 1 1 1 18] );
-Stemp(:,:,:,21:40) = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'S' ), [ 0 0 0 719 ], [ nx ny nz 20 ] , [ 1 1 1 18]  );
-Ttemp(:,:,:,41:60) = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'Temp' ), [ 0 0 0 703 ], [ nx ny nz 20 ] , [ 1 1 1 18] );
-Stemp(:,:,:,41:60) = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'S' ), [ 0 0 0 703 ], [ nx ny nz 20 ] , [ 1 1 1 18]  );
+ncid = netcdf.open( '/hpcdata/scratch/am8e13/cs_36km_tutorial/run_spinup_CORE/results/state480.nc', 'NOWRITE' );
+Ttemp = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'Temp' ), [ 0 0 0 11 ], [ nx ny nz 20 ] , [ 1 1 1 12] );
+Stemp = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'S' ), [ 0 0 0 11 ], [ nx ny nz 20 ] , [ 1 1 1 12]  );
+Ttemp(:,:,:,21:40) = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'Temp' ), [ 0 0 0 12 ], [ nx ny nz 20 ] , [ 1 1 1 12] );
+Stemp(:,:,:,21:40) = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'S' ), [ 0 0 0 12 ], [ nx ny nz 20 ] , [ 1 1 1 12]  );
+Ttemp(:,:,:,41:60) = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'Temp' ), [ 0 0 0 13 ], [ nx ny nz 20 ] , [ 1 1 1 12] );
+Stemp(:,:,:,41:60) = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'S' ), [ 0 0 0 13 ], [ nx ny nz 20 ] , [ 1 1 1 12]  );
 
-time0 = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'T' ), [ 720 ], [ 20 ] , [ 18 ] );
-time1 = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'T' ), [ 703 ], [ 20 ] , [ 18 ] );
-time2 = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'T' ), [ 719 ], [ 20 ] , [ 18 ] );
+time0 = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'T' ), [ 11 ], [ 20 ] , [ 12 ] );
+time1 = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'T' ), [ 12 ], [ 20 ] , [ 12 ] );
+time2 = netcdf.getVar( ncid, netcdf.inqVarID( ncid, 'T' ), [ 13 ], [ 20 ] , [ 12 ] );
 time0/(60*60*24*360)
 time1/(60*60*24*360)
 time2/(60*60*24*360)
@@ -31,8 +31,10 @@ tofillS = origiS ;
 fillT = tofillT ;
 fillS = tofillS ;
 
+fprintf('filling in spaces')
+
 % calculate the average around every 0 point  
-for k = 1 : 100
+for k = 1 : 200
     for iz = 1:nz
         for ix = 2:nx-1
             for iy = 2:ny-1
@@ -76,6 +78,8 @@ for k = 1 : 100
             end
         end
     end
+    fprintf('%f , %f \n',sum(sum(sum(fillS==0))),sum(sum(sum(fillT==0))))
+    
     tofillS = fillS ;
     tofillT = fillT ;
     fprintf('%f \n',k)
@@ -112,6 +116,13 @@ for i = 1:2
     end
 end
 
+fprintf('saving 18km')
+% Saving 18km start spinup
+fout=['/scratch/general/am8e13/THETA_420x384_from36km_CORE_spinup'];
+writebin(fout,tempT36)
+fout=['/scratch/general/am8e13/SALT_420x384_from36km_CORE_spinup'];
+writebin(fout,tempS36)
+
 nx=420; ny=384; nx2=840; ny2=768;
 x=-.5:(nx+.5); y=-.5:(ny+.5);
 x2=.25:.5:nx; y2=.25:.5:ny;
@@ -123,14 +134,16 @@ tmp=zeros(nx+2,ny+2);
 tempS=zeros(nx2,ny2,50);
 tempT=zeros(nx2,ny2,50);
 
+fprintf('saving 9km')
+
 for i = 1:2
     % set up file output and 
     if i == 1
-        fout=['THETA_840x768_from36km_fill1'];
+        fout=['/scratch/general/am8e13/THETA_840x768_from36km_CORE_spinup'];
         finit = tempT36 ;
     else
-        fout=['SALT_840x768_from36km_fill1'];
-    finit = tempS36;
+        fout=['/scratch/general/am8e13/SALT_840x768_from36km_CORE_spinup'];
+        finit = tempS36;
     end
 
     for k = 1:50
