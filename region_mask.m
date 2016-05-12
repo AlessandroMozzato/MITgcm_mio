@@ -1,7 +1,7 @@
 % This script creates region mask files
 % 3 regions were selected: Arctic, North Atlantic, Norwegian basin
 
-res = 36 ;
+res = 18 ;
 
 if res == 36
     nx = 210 ; ny = 192 ; nz = 50 ;
