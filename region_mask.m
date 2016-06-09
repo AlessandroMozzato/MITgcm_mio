@@ -37,7 +37,19 @@ mask1(69*k:76*k,59*k:85*k,:) = 2 ;
 % North Atlantic
 mask1(1:76*k,100*k:192*k,:) = 3 ;
 mask1(1:26*k,51*k:91*k,:) = 3 ;
-mask1(1:31*k,91*k:101*k,:) =3 ;
+mask1(1:31*k,91*k:101*k,:) = 3 ;
+
+% Lofoten Basin
+mask1(23*k:38*k,58*k:79*k,:) = 4 ;
+% Greenland Sea
+mask1(52*k:65*k,60*k:80*k,:) = 5 ;
+% Norwegian Basin
+mask1(40*k:52*k,52*k:67*k,:) = 6 ;
+% Iceland Sea
+mask1(41*k:51*k,82*k:98*k,:) = 7 ;
+% Labrador Sea
+mask1(38*k:61*k,135*k:158*k,:) = 8 ;
+
 mask1(hfacc==0) = 0 ;
 
 writebin(strcat('/scratch/general/am8e13/perturbation_fields/mask_regions_',int2str(res),'km'),mask1)
